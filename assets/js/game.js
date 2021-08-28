@@ -46,55 +46,68 @@ var fightOrSkip = function() {
 
 // function to fight in the game
 var fight = function(enemyInfo) {
+  //keep track of who goes first
+  var isPlayerTurn = true;
+  //randomly changes turn order
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+
   while (playerInfo.health > 0 && enemyInfo.health > 0) {
+    if (isPlayerTurn) {
+      // ask player if they'd like to fight or skip using fightOrSkip function
+      if (fightOrSkip()) {
+        // if true, leave fight by breaking loop
+        break;
+      }
 
-    // ask player if they'd like to fight or skip using fightOrSkip function
-    if (fightOrSkip()) {
-      // if true, leave fight by breaking loop
-      break;
-    }
+      // generate random damage value based on player's attack power
+      var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
+      
+      // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
+      enemyInfo.health = Math.max(0, enemyInfo.health - damage);
+      console.log(
+        playerInfo.name + ' attacked ' + enemyInfo.name + '. ' + enemyInfo.name + ' now has ' + enemyInfo.health + ' health remaining.'
+      );
 
-    // generate random damage value based on player's attack power
-    var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
-    
-    // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
-    enemyInfo.health = Math.max(0, enemyInfo.health - damage);
-    console.log(
-      playerInfo.name + ' attacked ' + enemyInfo.name + '. ' + enemyInfo.name + ' now has ' + enemyInfo.health + ' health remaining.'
-    );
+      // check enemy's health
+      if (enemyInfo.health <= 0) {
+        window.alert(enemyInfo.name + ' has died!');
 
-    // check enemy's health
-    if (enemyInfo.health <= 0) {
-      window.alert(enemyInfo.name + ' has died!');
+        // award player money for winning
+        playerInfo.money = playerInfo.money + 20;
+        console.log('Player has been awarded 20 dollars for winning. You now have ' + playerInfo.money + ' dollars.');
 
-      // award player money for winning
-      playerInfo.money = playerInfo.money + 20;
-      console.log('Player has been awarded 20 dollars for winning. You now have ' + playerInfo.money + ' dollars.');
-
-      // leave while() loop since enemy is dead
-      break;
+        // leave while() loop since enemy is dead
+        break;
+      } else {
+        window.alert(enemyInfo.name + ' still has ' + enemyInfo.health + ' health left.');
+      }
+      //player gets attacked first
     } else {
-      window.alert(enemyInfo.name + ' still has ' + enemyInfo.health + ' health left.');
-    }
+        // generate random damage value based on enemy's attack power
+        var damage = randomNumber(enemyInfo.attack - 3, enemyInfo.attack);
+        // remove players's health by subtracting the amount set in the enemy.attack variable
+        playerInfo.health = Math.max(0, playerInfo.health - damage);
+        console.log(
+          enemyInfo.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
+        );
 
-    // generate random damage value based on enemy's attack power
-    var damage = randomNumber(enemyInfo.attack - 3, enemyInfo.attack);
-    // remove players's health by subtracting the amount set in the enemy.attack variable
-    playerInfo.health = Math.max(0, playerInfo.health - damage);
-    console.log(
-      enemyInfo.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
-    );
-
-    // check player's health
-    if (playerInfo.health <= 0) {
-      window.alert(playerInfo.name + ' has died!');
-      // leave while() loop if player is dead
-      break;
-    } else {
-      window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
-    }
+        // check player's health
+        if (playerInfo.health <= 0) {
+          window.alert(playerInfo.name + ' has died!');
+          // leave while() loop if player is dead
+          break;
+        } else {
+          window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
+        }
+      }
+      //switch turn order for nect round
+      isPlayerTurn = !isPlayerTurn;
   }
 };
+
+
 
 // function to shop in the game
 var shop = function() {
