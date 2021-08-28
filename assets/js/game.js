@@ -27,9 +27,11 @@ var fight = function(enemyName) {
           break;
         }
       }
-  
+
+      // generate random damage value based on player's attack power
+      var damage = randomNumber(playerAttack -3, playerAttack);
       // remove enemy's health by subtracting the amount set in the playerAttack variable
-      enemyHealth = enemyHealth - playerAttack;
+      enemyHealth = Math.max(0, enemyHealth - damage);
       console.log(
         playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
       );
@@ -47,8 +49,10 @@ var fight = function(enemyName) {
         window.alert(enemyName + ' still has ' + enemyHealth + ' health left.');
       }
   
+      // generate random damage value based on enemy's attack power
+      var damage = randomNumber(enemyAttack - 3, enemyAttack);
       // remove players's health by subtracting the amount set in the enemyAttack variable
-      playerHealth = playerHealth - enemyAttack;
+      playerHealth = Math.max(0, playerHealth - damage);
       console.log(
         enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
       );
@@ -80,7 +84,12 @@ var shop = function() {
         window.alert("Refilling player's health by 20 for 7 dollars.");
   
         playerHealth = playerHealth + 20;
-        playerMoney = playerMoney - 7;
+        playerMoney = Math.max(0, playerMoney - 7);
+        // could also use this instead of Math.max
+        // playerMoney = playerMoney - 7;
+        // if (playerMoney < 0) {
+        //    playerMoney = 0;
+        // }
       }
       else {
         window.alert("You don't have enough money!");
@@ -93,7 +102,7 @@ var shop = function() {
         window.alert("Upgrading player's attack by 6 for 7 dollars.");
   
         playerAttack = playerAttack + 6;
-        playerMoney = playerMoney - 7;
+        playerMoney = Math.max(0, playerMoney - 7);
       }
       else {
         window.alert("You don't have enough money!");
@@ -119,7 +128,7 @@ var startGame = function() {
 
   for (var i = 0; i < enemyNames.length; i++) {
       var pickedEnemyName = enemyNames[i];
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
       fight(pickedEnemyName);
       // if player is still alive and we're not at the last enemy in the array
       if (playerHealth > 0 && i < enemyNames.length - 1) {
@@ -178,6 +187,13 @@ if (playAgainConfirm) {
   startGame();
 } else {
   window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+}
+
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
 }
 
 //start the game when the page loads
