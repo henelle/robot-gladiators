@@ -6,33 +6,57 @@ var getPlayerName = function () {
     name = prompt("What is your robot's name?");
   }
 
-  console.log("Your robot's name is " + name);
+  console.log("Your robot's name is " + name + ".");
   return name;
 }
+
+// function that asks player if they want to fight or skip
+var fightOrSkip = function() {
+  // ask player if they'd like to fight or skip using fightOrSkip function
+  var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+
+  // conditional recursive function call
+  if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  // changes the entire string to lower case
+  promptFight = promptFight.toLowerCase();
+
+  // If player picks "skip" confirm and then stop the loop
+  if (promptFight === "skip" || promptFight === "SKIP") {
+    // confirm player wants to skip
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+    // if yes (true), leave fight
+    if (confirmSkip) {
+      window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+      // subtract money from playerInfo.money for skipping, but don't let them go in the negative
+      playerInfo.money = Math.max(0, playerInfo.money - 10);
+      console.log("Player has decided to skip and lost 10 dollars. Player now has " + playerInfo.money + " dolllars.");
+      // return true if player wants to leave
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+};
 
 // function to fight in the game
 var fight = function(enemyInfo) {
   while (playerInfo.health > 0 && enemyInfo.health > 0) {
-    // ask player if they'd like to fight or run
-    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
 
-    // if player picks "skip" confirm and then stop the loop
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      // confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-      // if yes (true), leave fight
-      if (confirmSkip) {
-        window.alert(playerInfo.name + ' has decided to skip this fight. Goodbye!');
-        // subtract money from playerInfo.money for skipping
-        playerInfo.money = playerInfo.money - 10;
-        console.log('You have chosen to skip. 10 dollars have been taken from you. You only have ' + playerInfo.money + ' dollars remaining.')
-        break;
-      }
+    // ask player if they'd like to fight or skip using fightOrSkip function
+    if (fightOrSkip()) {
+      // if true, leave fight by breaking loop
+      break;
     }
 
     // generate random damage value based on player's attack power
     var damage = randomNumber(playerInfo.attack -3, playerInfo.attack);
+    
     // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
     enemyInfo.health = Math.max(0, enemyInfo.health - damage);
     console.log(
@@ -143,7 +167,8 @@ var startGame = function() {
     if (playerInfo.health > 0) {
         // let player know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
         window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
-        
+        console.log("You have attack power of " + playerInfo.attack + ", health of " + playerInfo.health + ", and " + playerInfo.money + " dollars.");
+  
         // pick new enemy to fight based on the index of the enemy.names array
         var pickedEnemyObj = enemyInfo[i];
       
@@ -193,6 +218,7 @@ var playerInfo = {
       this.money -= 7;
     } else {
       window.alert("You don't have enough money!");
+      console.log("You did not have enough money!");
     }
   },
   upgradeAttack: function() {
@@ -202,6 +228,7 @@ var playerInfo = {
       this.money -= 7;
     } else {
       window.alert("You don't have enough money!");
+      console.log("You did not have enough money!");
     }
   }
 };
