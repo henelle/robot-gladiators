@@ -1,6 +1,6 @@
 
+// function to fight in the game
 var fight = function(enemyInfo) {
-    
   while (playerInfo.health > 0 && enemyInfo.health > 0) {
     // ask player if they'd like to fight or run
     var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
@@ -15,7 +15,7 @@ var fight = function(enemyInfo) {
         window.alert(playerInfo.name + ' has decided to skip this fight. Goodbye!');
         // subtract money from playerInfo.money for skipping
         playerInfo.money = playerInfo.money - 10;
-        console.log("playerInfo.money", playerInfo.money)
+        console.log('You have chosen to skip. 10 dollars have been taken from you. You only have ' + playerInfo.money + ' dollars remaining.')
         break;
       }
     }
@@ -34,6 +34,7 @@ var fight = function(enemyInfo) {
 
       // award player money for winning
       playerInfo.money = playerInfo.money + 20;
+      console.log('Player has been awarded 20 dollars for winning. You now have ' + playerInfo.money + ' dollars.');
 
       // leave while() loop since enemy is dead
       break;
@@ -60,7 +61,7 @@ var fight = function(enemyInfo) {
   }
 };
 
-
+// function to shop in the game
 var shop = function() {
   // ask player what they'd like to do
   var shopOptionPrompt = window.prompt(
@@ -71,10 +72,12 @@ var shop = function() {
     case "REFILL": // new case
     case "refill":
       playerInfo.refillHealth();
+      console.log('You have chosen to refill health. Your health is now ' + playerInfo.health + ' and the remaining money is ' + playerInfo.money + '.');
       break;
     case "UPGRADE": // new case
     case "upgrade":
       playerInfo.upgradeAttack();
+      console.log('You have chosen to upgrade attack. Your attack is now ' + playerInfo.attack + ' and the remaining money is ' + playerInfo.money + '.');
       break;
     case "LEAVE": // new case
     case "leave":
@@ -87,6 +90,38 @@ var shop = function() {
   }
 };
 
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
+};
+
+// function to end the entire game
+var endGame = function() {
+  window.alert("The game has now ended. Let's see how you did!");
+
+  // if player is still alive, player wins!
+  if (playerInfo.health > 0) {
+    window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
+    console.log('You have won the game. Final total for ' + playerInfo.name + '. Health is ' + playerInfo.health + ', money is ' + playerInfo.money + ' and attack power is ' + playerInfo.attack + '.');
+  } else {
+    window.alert("You've lost your robot in battle.");
+    console.log('You have lost the game. Final total for ' + playerInfo.name + '. Health is ' + playerInfo.health + ', money is ' + playerInfo.money + ' and attack power is ' + playerInfo.attack + '.');
+  }
+
+  // ask player if they'd like to play again
+  var playAgainConfirm = window.confirm("Would you like to play again?");
+
+  if (playAgainConfirm) {
+    // restart the game
+    startGame();
+  } else {
+    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+  }
+};
+
+// function to start the game
 var startGame = function() {
   //reset player stats
   playerInfo.reset();
@@ -123,39 +158,10 @@ var startGame = function() {
         window.alert("You have lost your robot in battle! Game Over!");
         break;
       }
-  };
+  }
 
   // after the loop ends, player is either out of health or enemies to fight, so run the endGame function
   endGame();
-};
-
-// function to end the entire game
-var endGame = function() {
-  window.alert("The game has now ended. Let's see how you did!");
-
-  // if player is still alive, player wins!
-  if (playerInfo.health > 0) {
-    window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
-  } else {
-    window.alert("You've lost your robot in battle.");
-  }
-
-  // ask player if they'd like to play again
-  var playAgainConfirm = window.confirm("Would you like to play again?");
-
-  if (playAgainConfirm) {
-    // restart the game
-    startGame();
-  } else {
-    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-  }
-};
-
-// function to generate a random numeric value
-var randomNumber = function(min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
-
-  return value;
 };
 
 // player info
@@ -189,7 +195,8 @@ var playerInfo = {
   }
 };
 // You can also log multiple values at once like this
-console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
+// console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
+console.log('Player name is ' + playerInfo.name + '. Player has attack strength of ' + playerInfo.attack + '. Player has ' + playerInfo.health + ' total health and ' + playerInfo.money + ' total money.')
 
 // enemy info
 var enemyInfo = [
