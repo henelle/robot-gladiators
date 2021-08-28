@@ -70,34 +70,11 @@ var shop = function() {
   switch (shopOptionPrompt) {
     case "REFILL": // new case
     case "refill":
-      if (playerInfo.money >= 7) {
-        window.alert("Refilling player's health by 20 for 7 dollars.");
-  
-        playerInfo.health = playerInfo.health + 20;
-        playerInfo.money = Math.max(0, playerInfo.money - 7);
-        // could also use this instead of Math.max
-        // playerInfo.money = playerInfo.money - 7;
-        // if (playerInfo.money < 0) {
-        //    playerInfo.money = 0;
-        // }
-      }
-      else {
-        window.alert("You don't have enough money!");
-      }
-  
+      playerInfo.refillHealth();
       break;
     case "UPGRADE": // new case
     case "upgrade":
-      if (playerInfo.money >= 7) {
-        window.alert("Upgrading player's attack by 6 for 7 dollars.");
-  
-        playerInfo.attack = playerInfo.attack + 6;
-        playerInfo.money = Math.max(0, playerInfo.money - 7);
-      }
-      else {
-        window.alert("You don't have enough money!");
-      }
-  
+      playerInfo.upgradeAttack();
       break;
     case "LEAVE": // new case
     case "leave":
